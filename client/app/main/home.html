@@ -1,0 +1,35 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-if = "loading">
+	<h3><span class = "fa fa-spinner fa-spin"></span>Loading Data... Please wait</h3>
+</div>
+<div ng-if = "!loading" class="container">
+	<div class="card" style="min-height:20vh;border-top:2px solid;border-top-color: #c1c1c1">
+		<h6>Current Orders</h6>
+		<hr>
+		<div class="center" ng-if="loader">
+			<img src="assets/images/loader.gif" alt="Loading..." width="20"> LOADING...
+		</div>
+		<div>
+			<table class="table table-curved" style="width:100%" border="1" style="border-color:#040013">
+					<tr style="background-color: #548ed3; font-weight:bold;color:#f2f2f2">
+							<td>#</td>
+							<td>Order Name</td>	
+							<td>Created</td>
+							<td>Processed</td>
+							<td>Total Price</td>
+					</tr>
+					<tbody>
+						<tr ng-repeat = "order in orders">
+								<td>{{order.order_number}}</td>
+								<td>order.name</td>
+								<td>{{order.created_at | date}}</td>
+								<td>{{order.processed_at | date}}</td>
+								<td>{{order.total_price| number}}</td>
+								
+						</tr>
+					</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+

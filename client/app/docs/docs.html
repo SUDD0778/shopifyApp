@@ -1,0 +1,124 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div style="padding-left:100px;margin-top:-10px;box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);" class="bg-light-blue">
+	<br>
+	<h1>Batches</h1>
+	<br>
+</div>
+<div style="padding: 2%;margin-left: 4%;">
+        <hr/>
+        <div class="col-md-12">
+            <div class="pull-left">
+                <h2>Batches</h2>
+                <h3 ng-if="!loaded"><i class="fa fa-spinner fa-spin"></i><span>Loading...Please Wait</span></h3>
+            </div>
+        </div>
+        <tabset ng-if="loaded">
+			<tab heading = "Create Batches">
+				<div style="margin-top: 2%;" ng-if="tabs.batches">
+						<div class="col-md-6">
+							<form name="form_batch" novalidate ng-submit="submitBatch(form_batch, batchesForm)">
+								<div class="form-group">
+									<label>Name</label>
+									<input type="text" name="batchName" class="form-control" required ng-model="batchesForm.batches.batchName" ng-disabled="batchesForm.batches.disabled" ng-change="clearMongooseError(form_batch, 'batchName')" placeholder="eg. Batch 1" />
+									<p class="text-danger"><span ng-if="form_batch.batches.batchName.$dirty && form_batch.batches.batchName.$error.required">{{'this_field_is_required'}}.</span><span ng-if="form_batch.batches.batchName.$dirty && form_batch.batches.batchName.$error.mongoose">{{form_batch.batches.batchName.$error.mongoose}}</span></p>
+								</div>
+								<div class="form_group">
+									<label>Status</label>
+									<select name="status" class="form-control" required ng-model="batchesForm.batches.status" ng-disabled="batchesForm.batches.disabled || batchesForm.batches.isEdit">
+										<option value="">Select Status</option>
+										<option value="open">Open</option>
+										<option value="fulfillment">Fulfillment</option>
+									</select>
+									<p class="text-danger"><span ng-if="form_batch.batches.batches.$dirty && form_batch.batches.status.$error.required">{{'this_field_is_required'}}.</span><span ng-if="form_batch.batches.status.$dirty && form_batch.batches.status.$error.mongoose">{{form_batch.batches.status.$error.mongoose}}</span></p>
+								</div>
+								<div>
+									<label>Note</label>
+									<textarea name="note" class="form-control" ng-model="batchesForm.batches.note" ng-disabled="batchesForm.batches.disabled"></textarea>
+								</div>
+								<div class="form-group">
+									<label>Start Date</label>
+									<div style="padding-left: 0;">
+										<input type="text" id="startDateInput" readonly class="form-control" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="batchesForm.batches.startDate" is-open="batchesForm.open_start" ng-click="batchesForm.open_start=!batchesForm.open_start" placeholder="dd-MMMM-yyyy" style="cursor:pointer;" show-button-bar = "false"/>
+									</div>
+									<br>
+									<label>End Date</label>
+									<div style="padding-right: 0px;">
+										<input type="text" id="endDateInput" readonly class="form-control" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="batchesForm.batches.endDate" is-open="batchesForm.open_end" ng-click="batchesForm.open_end=!batchesForm.open_end" placeholder="dd-MMMM-yyyy"/>
+									</div>
+								</div>							
+	
+								<div class="well">
+									<button ng-disabled="batchesForm.disabled || form_batch.$invalid" type="submit" class="btn" ng-class="{'btn-primary': !batchesForm.isEdit, 'btn-success': batchesForm.isEdit}"><span ng-if="!batchesForm.isEdit">{{'submit'}}</span><span ng-if="batchesForm.isEdit">Update</span></button>
+									<button ng-if="batchesForm.isEdit" class="btn btn-danger" ng-click="cancelUpdate('batch', form_batch)">Cancel</button>
+								</div>
+							</form>
+						</div>
+				</div>
+				<div class = "col-md-6">
+					<div class = "table-responsive" style = "width : 100%;">
+						<table class = "table">
+							<tr>
+								<div style = "width : 100%; max-width : 100%;">
+									<input type = "text" ng-model = "searchField.batchName" placeholder = "Search" class = "form-control" ng-change = "getSearchResults('batch', searchField.batchName)">
+								</div>
+							</tr>
+							<tr>
+								<th style = "width : 20%; max-width : 20%;">Batch Name</th>
+								<th style = "width : 15%; max-width : 15%;">Status</th>
+								<th style = "width : 15%; max-width : 15%;">Date Range</th>
+								<th style = "width : 35%; max-width : 35%;" >Note</th>
+								<th style = "width : 35%; max-width : 35%;" >View Orders</th>
+								<th style = "width : 15%; max-width : 15%;"></th>
+							</tr>
+							<!-- <tr dir-paginate = "item in allData.batches | itemsPerPage: 10"  pagination-id = "paginationItems" > -->
+							<tr ng-repeat = "item in allData.availableBatches track by item._id">
+								<td style = "width : 20%; max-width : 20%;">{{item.batchName ? item.batchName : '-'}}</td>
+								<td style = "width : 15%; max-width : 15%;">{{item.status}}</td>
+								<td style = "width : 15%; max-width : 15%;">{{item.startDate | date}}-{{item.endDate | date}}</td>
+								<td style = "width : 35%; max-width : 35%;">{{item.note ? item.note :''}}</td>
+								<td style = "width : 15%; max-width : 15%;"><a class="btn btn-default" ng-click="viewOrders(item)">View Orders</a></td>
+								<td style = "width : 15%; max-width : 15%;" ><a href = "#" class = "text-primary fa fa-edit" ng-click = "edit('batch', item, batchesForm, $index)">Edit</a></td>
+							</tr>
+						</table>
+						<!-- <div class = "text-center">
+							<dir-pagination-controls pagination-id = "paginationItems"></dir-pagination-controls>
+						</div> -->
+					</div>
+				</div>
+			</tab>
+		</tabset>
+</div>
+
+<script type="text/ng-template" id="orderModal.html">
+	<div class = "modal-header">
+		<h3>View Orders</h3>
+	</div>
+	<div class = "modal-body">
+			<table class="table table-curved" style="width:100%" border="1" style="border-color:#040013">
+				<tr style="background-color: #548ed3; font-weight:bold;color:#f2f2f2">
+						<td>#</td>
+						<td>Order Name</td>	
+						<td>Created</td>
+						<td>Processed</td>
+						<td>Total Price</td>
+						<td>Order Status</td>
+				</tr>
+				<tbody>
+					<tr ng-repeat = "order in batchOrders track by ($index+1)">
+							<td>{{order.order_number}}</td>
+							<td>order.name</td>
+							<td>{{order.created_at | date}}</td>
+							<td>{{order.processed_at | date}}</td>
+							<td>{{order.total_price| number}}</td>
+							<td>
+								<span ng-if = "!order.closed_at" ng-click = "closeOrder(order)"><a href="">Fulfill Order </a></span>
+								<span ng-if = "order.closed_at">Fulfilled</span>
+							</td>
+					</tr>
+					<tr>
+						<td ng-if = "batchOrders.length == 0" colspan = "5"><strong>No Orders found in this batch</strong></td>	
+					</tr>
+				</tbody>
+			</table>
+	</div>
+</script>

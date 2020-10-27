@@ -1,0 +1,58 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-if = "loading">
+	<h3><span class = "fa fa-spinner fa-spin"></span>Loading Data... Please wait</h3>
+</div>
+<div ng-if = "!loading" class="container" ng-controller="ResourceCtrl">
+	<div class="col-sm-7">
+		<h6>Products</h6>
+        <hr>
+		<div ng-if="!loader">
+			<table class="table table-curved" style="width:100%" border="1" style="border-color:#040013">
+				<tr style="background-color: #548ed3; font-weight:bold;color:#f2f2f2">
+					<td>Name</td>
+					<td>Title</td>
+					<td>Vendor</td>
+					<td>Created Date</td>
+					<td>Product Type</td>
+				</tr>
+				<tr ng-repeat="product in products">
+					<td>{{product.body_html}}</td>
+					<td>{{product.title}}</td>
+					<td>{{product.vendor}}</td>
+					<td>{{product.created_at | date}}</td>
+					<td>{{product.product_type | date}}</td>
+					
+					<!-- <td>
+						<select ng-model="user_group" ng-change="updateApi(resource._id, $index, {user_group: user_group})" ng-disabled="!isMaster">
+							<option value="sparta" ng-selected="resource.user_group=='sparta'">Sparta</option>
+							<option value="alpha" ng-selected="resource.user_group=='alpha'">Alpha</option>
+							<option value="beta" ng-selected="resource.user_group=='beta'">Beta</option>
+							<option value="gamma" ng-selected="resource.user_group=='gamma'">Gamma</option>
+						</select>
+					</td> -->
+					<!-- <td ng-if="isMaster">
+						<button class="btn btn-default btn-xs" ng-if="resource.hidden" ng-click="updateApi(resource._id, $index, {hidden: false})">
+							<span class="glyphicon glyphicon-eye-close"></span>
+						</button>
+						<button class="btn btn-default btn-xs" ng-if="!resource.hidden" ng-click="updateApi(resource._id, $index, {hidden: true})">
+							<span class="glyphicon glyphicon-eye-open"></span>
+						</button>
+					</td> -->
+				</tr>
+			</table>
+			<span ng-if="producs.length==0">No Products created yet.</span>
+		</div>		
+	</div>
+</div>
+<script type="text/ng-template" id="removeApi.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Delete Resource</h3>
+    </div>
+    <div class="modal-body">
+       Are you sure you want to delete this resource?
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="remove()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

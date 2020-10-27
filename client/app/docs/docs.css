@@ -1,0 +1,34 @@
+.doc-nav{
+	list-style-type: none;
+}
+.doc-nav>li{
+	font-size: 14px;
+	color: #031d34;
+	padding-bottom: 5px;
+}
+.doc-nav>li:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+.doc-desc{
+	font-size: 14px;
+}
+pre{
+	background-color: #292b36;
+    color: #ffffff
+}
+pre span{
+	color:#a1c436;
+}
+pre>.red{
+	color:#f00447;
+}
+.api-nav{
+	list-style-type: none;
+	text-transform: lowercase;
+	color: #5fb4ef;
+}
+.api-nav>li:hover{
+	text-decoration: underline;
+	cursor: pointer;
+};
